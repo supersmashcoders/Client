@@ -76,7 +76,25 @@ public class MenuActivity extends ActionBarActivity
     }
 
     @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            this.finish();
+        }
+    }
+
+    @Override
     public void updateTitle(int resourceId) {
         getSupportActionBar().setTitle(getString(resourceId));
+    }
+
+    @Override
+    public void onEventSelected(long eventId) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, EventFragment.newInstance(eventId))
+                .addToBackStack(null)
+                .commit();
     }
 }
