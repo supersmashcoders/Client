@@ -1,9 +1,9 @@
 package com.supersmashcoders.backtoback;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 
 public class MenuActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, EventsFragment.OnFragmentInteractionListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -45,9 +45,9 @@ public class MenuActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, EventsFragment.newInstance("" + position, "" + (position + 1)))
                 .commit();
     }
 
@@ -99,6 +99,18 @@ public class MenuActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+        if (id.equals("1")) {
+            mTitle = getString(R.string.title_section1);
+        } else if (id.equals("2")) {
+            mTitle = getString(R.string.title_section2);
+        } else if (id.equals("3")) {
+            mTitle = getString(R.string.title_section3);
+        }
+        getSupportActionBar().setTitle(mTitle);
     }
 
     /**
