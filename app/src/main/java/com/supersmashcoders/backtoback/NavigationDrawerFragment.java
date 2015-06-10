@@ -1,16 +1,16 @@
 package com.supersmashcoders.backtoback;
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,10 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.supersmashcoders.backtoback.adapters.DrawerOptionsAdapter;
 import com.supersmashcoders.backtoback.proxy.EventRequestType;
 
 /**
@@ -30,9 +30,10 @@ import com.supersmashcoders.backtoback.proxy.EventRequestType;
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
 public class NavigationDrawerFragment extends Fragment {
-    private static final String[] DRAWER_OPTIONS = new String[]{
-            EventRequestType.MY_SUBSCRIBED_EVENTS.toString(),
-            EventRequestType.MY_CREATED_EVENTS.toString(),
+    private static final EventRequestType[] DRAWER_OPTIONS = new EventRequestType[]{
+            EventRequestType.MY_SUBSCRIBED_EVENTS,
+            EventRequestType.MY_CREATED_EVENTS,
+            EventRequestType.ALL_EVENTS,
     };
 
     /**
@@ -103,11 +104,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DRAWER_OPTIONS));
+        mDrawerListView.setAdapter(new DrawerOptionsAdapter(getActivity(), R.layout.drawer_option, DRAWER_OPTIONS));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -279,6 +276,6 @@ public class NavigationDrawerFragment extends Fragment {
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(String item);
+        void onNavigationDrawerItemSelected(EventRequestType item);
     }
 }

@@ -4,7 +4,8 @@ import com.supersmashcoders.backtoback.R;
 
 public enum EventRequestType {
     MY_SUBSCRIBED_EVENTS ("Subscribed", R.string.title_my_subscribed_events),
-    MY_CREATED_EVENTS ("Created", R.string.title_my_created_events);
+    MY_CREATED_EVENTS ("Created", R.string.title_my_created_events),
+    ALL_EVENTS ("All", R.string.title_all_events);
 
     private String requestName;
     private int titleResourceId;

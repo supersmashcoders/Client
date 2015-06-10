@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.supersmashcoders.backtoback.models.EventModel;
+import com.supersmashcoders.backtoback.proxy.EventRequestType;
 
 
 public class MenuActivity extends ActionBarActivity
@@ -34,15 +35,15 @@ public class MenuActivity extends ActionBarActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(String optionName) {
+    public void onNavigationDrawerItemSelected(EventRequestType type) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, EventsFragment.newInstance(optionName))
-                .commit();
         /*fragmentManager.beginTransaction()
-                .replace(R.id.container, CreateFragment.newInstance())
+                .replace(R.id.container, EventsFragment.newInstance(optionName))
                 .commit();*/
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, CreateFragment.newInstance())
+                .commit();
     }
 
     public void restoreActionBar() {
