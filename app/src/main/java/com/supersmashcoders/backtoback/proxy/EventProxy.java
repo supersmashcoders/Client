@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventProxy {
-    public void getEvents(final Context context, final RequestListener<List<EventModel>> binder) {
+    public void getEvents(final Context context, final RequestListener<List<EventModel>> listener) {
         final String url = "http://jsonplaceholder.typicode.com/posts";
 
         // Request a string response from the provided URL.
@@ -33,13 +33,13 @@ public class EventProxy {
                         Log.e("JSON PARSE", "Failed to get JSON at position " + i + " from JSON Array " + response.toString());
                     }
                 }
-                binder.onComplete(eventModelList);
+                listener.onComplete(eventModelList);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("API FAIL", "Error calling API " + url);
-                binder.onError();
+                listener.onError();
             }
         });
 
@@ -47,7 +47,7 @@ public class EventProxy {
         ApplicationRequestQueue.INSTANCE.addToRequestQueue(context, eventsRequest);
     }
 
-    public void getEvent(final Context context, long id, final RequestListener<EventModel> binder) {
+    public void getEvent(final Context context, long id, final RequestListener<EventModel> listener) {
         final String url = "http://jsonplaceholder.typicode.com/posts/" + id;
 
         // Request a string response from the provided URL.
@@ -55,12 +55,12 @@ public class EventProxy {
             @Override
             public void onResponse(JSONObject response) {
                 EventModel eventModel = EventModel.of(response);
-                binder.onComplete(eventModel);
+                listener.onComplete(eventModel);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                binder.onError();
+                listener.onError();
                 Log.e("API FAIL", "Error calling API " + url);
             }
         });

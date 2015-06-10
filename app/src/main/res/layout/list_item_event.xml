@@ -4,19 +4,19 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/item_id"
+        android:id="@+id/item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ID"/>
+        android:text="name"/>
     <TextView
-        android:id="@+id/item_title"
+        android:id="@+id/item_description"
         android:textSize="@dimen/abc_text_size_title_material"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TITLE"/>
+        android:text="description"/>
     <TextView
-        android:id="@+id/item_body"
+        android:id="@+id/item_start_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="BODY"/>
+        android:text="date"/>
 </LinearLayout>

@@ -25,14 +25,14 @@ public class EventAdapter extends ArrayAdapter<EventModel>{
         if( convertView == null ){
             convertView = inflater.inflate(R.layout.list_item_event, parent, false);
         }
-        TextView itemId = (TextView) convertView.findViewById(R.id.item_id);
-        TextView itemTitle = (TextView) convertView.findViewById(R.id.item_title);
-        TextView itemBody = (TextView) convertView.findViewById(R.id.item_body);
+        TextView itemName = (TextView) convertView.findViewById(R.id.item_name);
+        TextView itemDescription = (TextView) convertView.findViewById(R.id.item_description);
+        TextView itemDate = (TextView) convertView.findViewById(R.id.item_start_date);
 
         EventModel jsonObject = getItem(position);
-        itemId.setText(String.valueOf(jsonObject.getId()));
-        itemTitle.setText(jsonObject.getTitle());
-        itemBody.setText(jsonObject.getBody());
+        itemName.setText(String.valueOf(jsonObject.getName()));
+        itemDescription.setText(jsonObject.getDescription());
+        itemDate.setText(jsonObject.getStartDate().toString());
 
         return convertView;
     }
