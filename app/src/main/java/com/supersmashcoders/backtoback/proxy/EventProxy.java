@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.supersmashcoders.backtoback.models.EventModel;
 
@@ -18,27 +17,35 @@ import java.util.List;
 
 public class EventProxy {
     public void getEvents(final Context context, final RequestListener<List<EventModel>> listener) {
-        final String url = "http://jsonplaceholder.typicode.com/posts";
+        final String url = "https://sschackathon.appspot.com/_ah/api/backtoback/v1/events";
 
         // Request a string response from the provided URL.
-        JsonArrayRequest eventsRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+        JsonObjectRequest eventsRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
-                List<EventModel> eventModelList = new ArrayList<>(response.length());
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(i);
-                        eventModelList.add(EventModel.of(jsonObject));
-                    } catch(JSONException e) {
-                        Log.e("JSON PARSE", "Failed to get JSON at position " + i + " from JSON Array " + response.toString());
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray events = response.getJSONArray("items");
+                    List<EventModel> eventModelList = new ArrayList<>(events.length());
+                    for (int i = 0; i < events.length(); i++) {
+                        try {
+                            JSONObject jsonObject = events.getJSONObject(i);
+                            eventModelList.add(EventModel.of(jsonObject));
+                        } catch (JSONException e) {
+                            Log.e("JSON PARSE", "Failed to get JSON at position " + i + " from JSON Array " + events.toString());
+                            Log.e("JSON PARSE", e.getMessage());
+                        }
                     }
+                    listener.onComplete(eventModelList);
+                } catch (JSONException e) {
+                    Log.e("JSON PARSE", "Failed to parse JSON " + response);
+                    Log.e("JSON PARSE", e.getMessage());
                 }
-                listener.onComplete(eventModelList);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("API FAIL", "Error calling API " + url);
+                Log.e("API FAIL", error.getMessage());
                 listener.onError();
             }
         });

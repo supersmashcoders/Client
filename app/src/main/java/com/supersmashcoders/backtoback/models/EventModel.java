@@ -3,6 +3,7 @@ package com.supersmashcoders.backtoback.models;
 import android.util.Log;
 
 import com.supersmashcoders.backtoback.converters.Converters;
+import com.supersmashcoders.backtoback.converters.DateConverter;
 import com.supersmashcoders.backtoback.converters.JsonArrayConverter;
 
 import org.json.JSONException;
@@ -47,8 +48,8 @@ public class EventModel {
             Long id = jsonEvent.getLong("id");
             String name = jsonEvent.getString("name");
             String description = jsonEvent.getString("description");
-            Date startDate = new Date(jsonEvent.getLong("startDate"));
-            Date endDate = new Date(jsonEvent.getLong("endDate"));
+            Date startDate = DateConverter.toDate(jsonEvent.getString("startDate"));
+            Date endDate = DateConverter.toDate(jsonEvent.getString("endDate"));
             UserEntity owner = UserEntity.of(jsonEvent.getJSONObject("owner"));
             List<String> tags = JsonArrayConverter.toStringList(jsonEvent.getJSONArray("tags"));
             List<UserEntity> attendants = JsonArrayConverter.toList(jsonEvent.getJSONArray("attendants"), new Converters.UserConverter());

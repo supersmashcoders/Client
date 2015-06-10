@@ -37,12 +37,12 @@ public class MenuActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(String optionName) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        /*fragmentManager.beginTransaction()
-                .replace(R.id.container, EventsFragment.newInstance(optionName))
-                .commit();*/
         fragmentManager.beginTransaction()
-                .replace(R.id.container, CreateFragment.newInstance())
+                .replace(R.id.container, EventsFragment.newInstance(optionName))
                 .commit();
+        /*fragmentManager.beginTransaction()
+                .replace(R.id.container, CreateFragment.newInstance())
+                .commit();*/
     }
 
     public void restoreActionBar() {
