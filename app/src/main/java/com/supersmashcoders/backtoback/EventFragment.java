@@ -73,8 +73,8 @@ public class EventFragment extends Fragment {
                 TextView itemBody = (TextView) mRootView.findViewById(R.id.item_body);
 
                 itemId.setText(String.valueOf(object.getId()));
-                itemTitle.setText(object.getTitle());
-                itemBody.setText(object.getBody());
+                //itemTitle.setText(object.getTitle());
+                //itemBody.setText(object.getBody());
             }
 
             @Override

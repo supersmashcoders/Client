@@ -28,7 +28,7 @@ import java.util.List;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnEventsFragmentInteractionListener}
  * interface.
  */
 public class EventsFragment extends Fragment implements AbsListView.OnItemClickListener {
@@ -37,7 +37,7 @@ public class EventsFragment extends Fragment implements AbsListView.OnItemClickL
     private EventRequestType mEventRequestType;
     EventProxy mEventProxy;
 
-    private OnFragmentInteractionListener mListener;
+    private OnEventsFragmentInteractionListener mListener;
 
     /**
      * The fragment's ListView/GridView.
@@ -116,10 +116,10 @@ public class EventsFragment extends Fragment implements AbsListView.OnItemClickL
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnEventsFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnEventsFragmentInteractionListener");
         }
     }
 
@@ -153,7 +153,7 @@ public class EventsFragment extends Fragment implements AbsListView.OnItemClickL
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnEventsFragmentInteractionListener {
         public void updateTitle(int resourceId);
         public void onEventSelected(long eventId);
     }

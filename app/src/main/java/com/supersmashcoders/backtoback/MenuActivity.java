@@ -8,9 +8,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.supersmashcoders.backtoback.models.EventModel;
+
 
 public class MenuActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, EventsFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, EventsFragment.OnEventsFragmentInteractionListener, CreateFragment.OnCreateFragmentInteractionListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -35,8 +37,11 @@ public class MenuActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(String optionName) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
+        /*fragmentManager.beginTransaction()
                 .replace(R.id.container, EventsFragment.newInstance(optionName))
+                .commit();*/
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, CreateFragment.newInstance())
                 .commit();
     }
 
@@ -96,5 +101,10 @@ public class MenuActivity extends ActionBarActivity
                 .replace(R.id.container, EventFragment.newInstance(eventId))
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onSubmit(EventModel eventModel) {
+
     }
 }

@@ -13,7 +13,7 @@ public class JsonArrayConverter {
         List<T> list = new ArrayList<>(jsonArray.length());
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                list.add(converter.convert(jsonArray.getJSONObject(i)));
+                list.add(converter.<T>convert(jsonArray.getJSONObject(i)));
             } catch(JSONException e) {
                 Log.e("JSON PARSE", "ERROR PARSING ELEMENT AT POSITION " + i + " OF ARRAY " + jsonArray.toString());
             }
