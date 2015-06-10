@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.List;
 
+import static com.supersmashcoders.backtoback.util.JSONUtil.getArrayOrEmpty;
+
 public class EventModel {
     private Long id;
     private String name;
@@ -51,9 +53,9 @@ public class EventModel {
             Date startDate = DateConverter.toDate(jsonEvent.getString("startDate"));
             Date endDate = DateConverter.toDate(jsonEvent.getString("endDate"));
             UserEntity owner = UserEntity.of(jsonEvent.getJSONObject("owner"));
-            List<String> tags = JsonArrayConverter.toStringList(jsonEvent.getJSONArray("tags"));
-            List<UserEntity> attendants = JsonArrayConverter.toList(jsonEvent.getJSONArray("attendants"), new Converters.UserConverter());
-            List<ImageEntity> photos = JsonArrayConverter.toList(jsonEvent.getJSONArray("photos"), new Converters.ImageConverter());
+            List<String> tags = JsonArrayConverter.toStringList(getArrayOrEmpty(jsonEvent, "tags"));
+            List<UserEntity> attendants = JsonArrayConverter.toList(getArrayOrEmpty(jsonEvent, "attendants"), new Converters.UserConverter());
+            List<ImageEntity> photos = JsonArrayConverter.toList(getArrayOrEmpty(jsonEvent, "photos"), new Converters.ImageConverter());
             return new EventModel(id, name, description, startDate, endDate, owner, tags, attendants, photos);
         } catch(JSONException e) {
             Log.e("JSON PARSE", "ERROR PARSING " + jsonEvent.toString());
