@@ -20,4 +20,9 @@ public class DateConverter {
         }
         return date;
     }
+
+    public static String toDisplayString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
+    }
 }

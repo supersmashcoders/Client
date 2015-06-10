@@ -55,7 +55,7 @@ public class EventProxy {
     }
 
     public void getEvent(final Context context, long id, final RequestListener<EventModel> listener) {
-        final String url = "http://jsonplaceholder.typicode.com/posts/" + id;
+        final String url = "https://sschackathon.appspot.com/_ah/api/backtoback/v1/event/" + id;
 
         // Request a string response from the provided URL.
         JsonObjectRequest eventRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {

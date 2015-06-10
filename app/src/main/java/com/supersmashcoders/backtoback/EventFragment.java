@@ -3,11 +3,13 @@ package com.supersmashcoders.backtoback;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.supersmashcoders.backtoback.converters.DateConverter;
 import com.supersmashcoders.backtoback.models.EventModel;
 import com.supersmashcoders.backtoback.proxy.EventProxy;
 import com.supersmashcoders.backtoback.proxy.RequestListener;
@@ -68,13 +70,17 @@ public class EventFragment extends Fragment {
         mEventProxy.getEvent(getActivity(), mEventId, new RequestListener<EventModel>() {
             @Override
             public void onComplete(EventModel object) {
-                TextView itemId = (TextView) mRootView.findViewById(R.id.item_id);
-                TextView itemTitle = (TextView) mRootView.findViewById(R.id.item_title);
-                TextView itemBody = (TextView) mRootView.findViewById(R.id.item_body);
+                TextView name = (TextView) mRootView.findViewById(R.id.name);
+                TextView description = (TextView) mRootView.findViewById(R.id.description);
+                TextView startDate = (TextView) mRootView.findViewById(R.id.start_date);
+                TextView endDate = (TextView) mRootView.findViewById(R.id.end_date);
+                TextView tags = (TextView) mRootView.findViewById(R.id.tags);
 
-                itemId.setText(String.valueOf(object.getId()));
-                //itemTitle.setText(object.getTitle());
-                //itemBody.setText(object.getBody());
+                name.setText(object.getName());
+                description.setText(object.getDescription());
+                startDate.setText(DateConverter.toDisplayString(object.getStartDate()));
+                endDate.setText(DateConverter.toDisplayString(object.getEndDate()));
+                tags.setText(TextUtils.join(",", object.getTags()));
             }
 
             @Override

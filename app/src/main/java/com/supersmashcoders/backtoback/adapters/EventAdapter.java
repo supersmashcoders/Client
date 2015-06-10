@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.supersmashcoders.backtoback.R;
+import com.supersmashcoders.backtoback.converters.DateConverter;
 import com.supersmashcoders.backtoback.models.EventModel;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class EventAdapter extends ArrayAdapter<EventModel>{
         EventModel jsonObject = getItem(position);
         itemName.setText(String.valueOf(jsonObject.getName()));
         itemDescription.setText(jsonObject.getDescription());
-        itemDate.setText(jsonObject.getStartDate().toString());
+        itemDate.setText(DateConverter.toDisplayString(jsonObject.getStartDate()));
 
         return convertView;
     }
