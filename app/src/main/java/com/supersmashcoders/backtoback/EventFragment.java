@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.MapFragment;
 import com.supersmashcoders.backtoback.converters.DateConverter;
 import com.supersmashcoders.backtoback.models.EventModel;
 import com.supersmashcoders.backtoback.proxy.EventProxy;
@@ -60,6 +61,11 @@ public class EventFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_event, container, false);
+
+        MapFragment mMapFragment = MapFragment.newInstance();
+        getChildFragmentManager().beginTransaction()
+                .add(R.id.map_container, mMapFragment)
+                .commit();
         return mRootView;
     }
 
