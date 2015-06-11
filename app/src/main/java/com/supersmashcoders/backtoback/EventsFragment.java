@@ -16,10 +16,11 @@ import android.widget.TextView;
 import com.supersmashcoders.backtoback.adapters.EventAdapter;
 import com.supersmashcoders.backtoback.dummy.DummyContent;
 import com.supersmashcoders.backtoback.models.EventModel;
-import com.supersmashcoders.backtoback.proxy.EventRequestType;
 import com.supersmashcoders.backtoback.proxy.EventProxy;
+import com.supersmashcoders.backtoback.proxy.EventRequestType;
 import com.supersmashcoders.backtoback.proxy.RequestListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,8 +34,10 @@ import java.util.List;
  */
 public class EventsFragment extends Fragment implements AbsListView.OnItemClickListener {
     private static final String EVENT_REQUEST_TYPE = "com.supersmashcoders.EventRequestType";
+    private static final String EVENT_LIST = "com.supersmashcoders.EventList";
 
     private EventRequestType mEventRequestType;
+    private List<EventModel> mEvents;
     EventProxy mEventProxy;
 
     private OnEventsFragmentInteractionListener mListener;
@@ -68,14 +71,7 @@ public class EventsFragment extends Fragment implements AbsListView.OnItemClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mEventRequestType = EventRequestType.valueOf(getArguments().getString(EVENT_REQUEST_TYPE));
-        }
         mEventProxy = new EventProxy();
-
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
     }
 
     @Override
@@ -83,33 +79,52 @@ public class EventsFragment extends Fragment implements AbsListView.OnItemClickL
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_events, container, false);
 
+        if (getArguments() != null) {
+            mEventRequestType = EventRequestType.valueOf(getArguments().getString(EVENT_REQUEST_TYPE));
+            mEvents = (List<EventModel>) getArguments().getSerializable(EVENT_LIST);
+            if (mEvents == null) {
+                mEvents = new ArrayList<>();
+                // TODO: Temporary adapter while content is loaded. Replace with spinner
+                mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
+                        android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+                mEventProxy.getEvents(getActivity(), new RequestListener<List<EventModel>>() {
+                    @Override
+                    public void onComplete(List<EventModel> eventsList) {
+                        mEvents = eventsList;
+                        EventAdapter jsonAdapter = new EventAdapter(getActivity(), R.layout.list_item_event, eventsList);
+                        mListView.setAdapter(jsonAdapter);
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.e("API CALL", "Error filling list");
+                    }
+                });
+            } else {
+                mAdapter = new EventAdapter(getActivity(), R.layout.list_item_event, mEvents);
+            }
+        } else if(savedInstanceState != null) {
+            mEventRequestType = EventRequestType.valueOf(savedInstanceState.getString(EVENT_REQUEST_TYPE));
+            mEvents = (List<EventModel>) savedInstanceState.getSerializable(EVENT_LIST);
+            mAdapter = new EventAdapter(getActivity(), R.layout.list_item_event, mEvents);
+        }
+
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
-
         mListener.updateTitle(mEventRequestType.getTitleResourceId());
 
         return view;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mEventProxy.getEvents(getActivity(), new RequestListener<List<EventModel>>() {
-            @Override
-            public void onComplete(List<EventModel> jsonModelList) {
-                EventAdapter jsonAdapter = new EventAdapter(getActivity(), R.layout.list_item_event, jsonModelList);
-                mListView.setAdapter(jsonAdapter);
-            }
-
-            @Override
-            public void onError() {
-                Log.e("API CALL", "Error filling list");
-            }
-        });
+    public void onPause() {
+        super.onPause();
+        getArguments().putString(EVENT_REQUEST_TYPE, mEventRequestType.name());
+        getArguments().putSerializable(EVENT_LIST, new ArrayList<>(mEvents));
     }
 
     @Override
@@ -132,6 +147,13 @@ public class EventsFragment extends Fragment implements AbsListView.OnItemClickL
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mListener.onEventSelected(id);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(EVENT_REQUEST_TYPE, mEventRequestType.name());
+        outState.putSerializable(EVENT_LIST, new ArrayList<>(mEvents));
+        super.onSaveInstanceState(outState);
     }
 
     /**

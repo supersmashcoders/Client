@@ -9,12 +9,13 @@ import com.supersmashcoders.backtoback.converters.JsonArrayConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import static com.supersmashcoders.backtoback.util.JSONUtil.getArrayOrEmpty;
 
-public class EventModel {
+public class EventModel implements Serializable {
     private Long id;
     private String name;
     private String description;

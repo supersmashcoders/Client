@@ -5,7 +5,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ImageEntity {
+import java.io.Serializable;
+
+public class ImageEntity implements Serializable {
     private Long id;
     private String servingURL;
 

@@ -7,9 +7,11 @@ import com.supersmashcoders.backtoback.converters.JsonArrayConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class UserEntity {
+public class UserEntity implements Serializable {
+
     private Long id;
     private String username;
     private String bio;
